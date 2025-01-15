@@ -1,0 +1,73 @@
+{% extends "index/master.html" %}
+{% load static %}
+
+
+
+{% block title %} EJIC| account{% endblock %}
+
+
+{% block content %}
+
+<style>
+.body_account{
+    display: flex;
+    height: 100vh;
+    width: 100dvw;
+    align-items: center;
+    justify-content: center;
+    
+}
+.center_div{
+    
+    background-color: white;
+    padding: 0.5rem;
+    border-radius: 20px;
+}
+
+.center_div h3,.center_div p{
+        display: inline;
+        
+    }
+.center_div .group_details{
+        margin: 10px;
+}
+button{
+    width: 95%;
+    margin: 0.5rem;
+}
+
+</style>
+
+<div class="body_account">
+    <div class="center_div">
+        {% if user.image %}
+                <img src="{{user.image.url}}" alt="face_image" style=" width: 99%; height: 5%;">
+        {% endif %}
+        <div class="group_details">
+            <h3>user id:</h3>
+            <p>{{user.user_id}}</p>
+        </div>
+        <div class="group_details">
+            <h3>username: </h3>
+            <p>{{user.username}}</p>
+        </div>    
+        <div class="group_details">
+            <h3>email:</h3>
+            <p>{{user.email}}</p>
+        </div>
+        <div class="group_details">
+            <h3>full name:</h3>
+            <p>{{user.first_name}} {{user.middle_name}} {{user.last_name}}</p>  
+        </div>
+        <div class="group_details">
+            <h3>phone number:</h3>
+            <p>{{user.phone_number}}</p>
+        </div>
+</div>
+
+
+
+
+
+
+{% endblock %}

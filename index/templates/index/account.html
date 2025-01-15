@@ -1,0 +1,62 @@
+{% extends "index/master.html" %}
+{% load static %}
+
+
+
+{% block title %} EJIC| account{% endblock %}
+
+
+{% block content %}
+
+<style>
+.body_account{
+    display: flex;
+    height: 90vh;
+    width: 100dvw;
+    align-items: center;
+    justify-content: center;
+    
+}
+.center_div{
+    background-color: white;
+    padding: 0.5rem;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+button{
+    width: 95%;
+    margin: 0.5rem;
+}
+
+</style>
+
+<div class="body_account">
+    <div class="center_div">
+        <a href="{% url 'update_account' %}">
+                <button type="submit" name="" value="">
+                    <p>Edit your personal information. </p>
+                </button>
+        </a>
+        <a href="{% url 'display_personal_information' %}">
+            <button type="submit" name="" value="">
+                <p>View your personal information. </p>
+            </button>
+        </a>
+        <a href="{% url 'reset_password' %}">
+            <button type="submit" name="" value="">
+                <p>Reset password. </p>
+            </button>
+        </a>
+        <form method="post" action="{% url 'logout' %}">{% csrf_token %}
+            <button type="submit" name="" value="">
+                <p>Log out.</p>
+            </button>
+        </form>
+    </div>
+
+</div>
+
+
+
+
+{% endblock %}

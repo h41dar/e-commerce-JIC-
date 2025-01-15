@@ -1,0 +1,26 @@
+{% extends "index/master.html" %}
+
+
+{% block title %} EJIC home{% endblock %}
+
+
+{% block content %}
+<div class="body_content">
+    <div class="form_container">
+        <h2>Login</h2>
+        <form action="" method="post"> {% csrf_token %}
+            {% for field in form %}
+            <div class="input-group">
+                {{ field.errors }}
+                {{ field.label_tag }} {{ field }}
+            </div>
+        {% endfor %}
+        <button type="submit">login</button>
+        </form>
+        <p class="register-link">
+            Don't have an account? <a href="{% url 'user_register' %} ">Register here</a>
+        </p>
+    </div>
+</div>
+  
+{% endblock %}

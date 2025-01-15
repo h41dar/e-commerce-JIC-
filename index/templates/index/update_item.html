@@ -1,0 +1,56 @@
+{% extends "index/master.html" %}
+
+
+{% block title %} EJIC| sell items {% endblock %}
+
+
+{% block content %}
+<style>
+    #user{
+        display: none;
+        visibility: hidden;
+    }
+</style>
+    <div class="body_content">
+        <div class="form_container">
+            {% if user.image %}
+                <img src="{{item.image.url}}" alt="item_image" style=" width: 99%; height: 5%;">
+            {% endif %}
+            <h2>Item</h2>
+            <form method="post" enctype="multipart/form-data"> {% csrf_token %}
+                <input type="text" value="{{user.user_id}}" name="user" id="user">
+                <div class="input-group">
+                    <label for="title">Title:</label>
+                    <input type="text" value="{{item}}"  id="title" name="title" maxlength="100" required>
+                </div>
+                <div class="input-group">
+                    <label for="description">Description:</label>
+                    <textarea id="description" name="description" rows="4" placeholder="Optional">{{item.description}}</textarea>
+                </div>
+                <div class="input-group">
+                    <label for="price">Price:</label>
+                    <input type="number" value="{{item.price}}" id="price" name="price" step="0.01" max="99999999.99" required>
+                </div>
+                <div class="input-group">
+                    <label for="category">Category:</label>
+                    <input type="text" value="{{item.category}}" id="category" name="category" maxlength="50" placeholder="Optional">
+                </div>
+                <div class="input-group">
+                    <label for="condition">Condition:</label>
+                    <select id="condition" name="condition"> 
+                        <option value="{{item.condition}}">{{item.condition}}</option>
+                        <option value="New">New</option>
+                        <option value="Used">Used</option>
+                        <option value="Like New">Like New</option>
+                        <option value="Refurbished">Refurbished</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="image">Upload Image (optional):</label>
+                    <input type="file" src="{{item.image}}" id="image" name="image" accept="image/*">
+                </div>
+                <button type="submit">update Item</button> 
+            </form>
+        </div>
+    </div>
+{% endblock %}

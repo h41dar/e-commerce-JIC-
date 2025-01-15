@@ -1,0 +1,55 @@
+{% extends "index/master.html" %}
+{% load static %}
+
+
+
+{% block title %} EJIC| Your item {% endblock %}
+
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'column_canter_div.css' %}">
+
+<div class="body_transaction">
+    {% for item in items %}
+        <div class="transaction">
+            <div class="left">
+                <div class="image_container"> <img src="{{ item.image.url }}" alt="{{ item.image }}" class="item_image"></div>
+            </div>
+            <div class="right"> 
+
+                <div class="group_details">
+                    <h3>Title:</h3>
+                    <p>{{item.title}}</p>
+                </div>
+                <div class="group_details">
+                    <h3>price:</h3>
+                    <p> {{item.price}} SAR</p>
+                </div>   
+                <div class="group_details">
+                    <h3>category:</h3>
+                    <p>{{item.category}}</p>
+                </div>    
+                <div class="group_details">    
+                    <h3>condition:</h3>
+                    <p>{{item.condition}}</p>
+                </div>    
+
+                <div class="buttons">
+                    
+                    <a href="update_item/{{item.item_id}}"><button> <h3>update</h3> </button> </a>
+                    <form method="post" >
+                        {% csrf_token %}
+                        <button type="submit" value="{{item.item_id}}" name="delete_item"><h3>delete</h3></button>
+                    </form>
+                   
+                </div>
+                    
+            
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+
+{% endblock %}

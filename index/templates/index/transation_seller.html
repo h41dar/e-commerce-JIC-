@@ -1,0 +1,81 @@
+{% extends "index/master.html" %}
+{% load static %}
+
+
+
+{% block title %} EJIC| Transaction {% endblock %}
+
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'column_canter_div.css' %}">
+
+<div class="body_transaction">
+    {% for transaction in transactions %}
+        <div class="transaction">
+            <div class="left">
+                <div class="image_container"> <img src="{{ transaction.item.image.url }}" alt="{{ item.image }}" class="item_image"></div>
+            </div>
+            <div class="right"> 
+                <div class="group_details">
+                    <h3>Transaction id:</h3>
+                    <p>{{transaction.transaction_id}}</p>
+                </div>
+                <div class="group_details">
+                    <h3>Title:</h3>
+                    <p>{{transaction.item.title}}</p>
+                </div>
+                <div class="group_details">
+                    <h3>price:</h3>
+                    <p> {{transaction.item.price}} SAR</p>
+                </div>
+                <div class="group_details">
+                    <h3>The buyer: </h3>
+                    <p>{{transaction.buyer}}</p>
+                </div>    
+                <div class="group_details">    
+                    <h3>The seller:</h3>
+                    <p>{{transaction.seller}}</p>
+                </div>
+                <div class="group_details">    
+                    <h3>The seller phone:</h3>
+                    <p>{{transaction.seller.phone_number}}</p>
+                </div>    
+                <div class="group_details">    
+                    <h3>Transaction date:</h3>
+                    <p>{{transaction.transaction_date}}</p>
+                </div>    
+                <div class="group_details">
+                    <h3>Amount:</h3>
+                    <p>{{transaction.amount}}</p>
+                </div>    
+                <div class="group_details">    
+                    <h3>Status:</h3>
+                    <p>{{transaction.status}}</p>
+                </div>
+                
+
+                {% if transaction.status == 'Completed'  %}
+                    <a href="review/{{transaction.transaction_id}}"><button> <h3> Review</h3>  </button> </a>
+                {% elif transaction.status == 'Pending'   %}
+                    <form method="post" > {% csrf_token %}
+                        <div class="group_details">    
+                            <h3>Code deliver:</h3>
+                            <input type="number" name="code_deliver" id="code_deliver" required>
+                        </div>
+                        {% if massage %}
+                        <h5>{{massage}}</h5>
+                        {% endif %}
+                    <button value="{{transaction.transaction_id}}" name="Completed_button">Completed</button>
+                    
+                    </form>    
+                {% endif %}
+                    
+            
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+
+{% endblock %}

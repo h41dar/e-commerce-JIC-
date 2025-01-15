@@ -1,0 +1,185 @@
+{% extends "index/master.html" %}
+{% load static %}
+
+
+
+{% block title %} EJIC| home{% endblock %}
+
+
+{% block content %}
+
+<style>
+    .search{
+        display: flex;
+        justify-content: center;
+    }
+    .search input{
+        width: 25rem;
+        height: 3rem;
+        border-radius: 5rem;
+    }
+    .filter{
+        display: flex;
+        width: 100%;
+        margin: auto;
+        margin-top: 0.5rem;
+    }
+
+</style>
+<style>
+    /* General form styling */
+    .filter, .search {
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 15px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        font-family: Arial, sans-serif;
+    }
+
+    /* Form elements layout */
+    .filter select, .search input[type="search"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+        box-sizing: border-box;
+    }
+
+    /* Button styling */
+    .filter button, .search button {
+        width: 100%;
+        padding: 10px;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .filter button:hover, .search button:hover {
+        background-color: #45a049;
+    }
+
+    /* Search suggestions */
+    #suggestions {
+        position: absolute;
+        width: 100%;
+        background-color: #fff;
+        z-index: 10;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    #suggestions div {
+        padding: 8px;
+        border-bottom: 1px solid #ddd;
+        cursor: pointer;
+    }
+
+    #suggestions div:hover {
+        background-color: #f1f1f1;
+    }
+    .filter button{
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        height: 2.4rem;
+    }
+
+    a{
+        text-decoration: none;
+         color: black;
+    }
+
+    .adviser{
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+        margin: 1rem;
+    }
+    .adviser img{
+       width: 34rem;
+       height: 26rem;
+       gap: 1rem;
+       border-radius: 20px;
+       box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+    }
+    .item_container{
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+    }
+    .detail_container {
+    display: grid;
+    grid-template-columns: auto auto; /* Two columns: one for title, one for price */
+    align-items: start; /* Align both items at the top */
+    gap: 10px; /* Adjust spacing between the title and price */
+    }
+
+        
+</style>
+
+<form method="GET" action="" class="search">
+    <input type="search" id="search" name="search" placeholder="Search for items..." autocomplete="off">
+    <div id="suggestions" style="border: 1px solid #ccc; display: none;"></div>
+</form>
+
+<form method="post" class="filter"> {% csrf_token %}
+    <select name="sort_by_price"> 
+    <option value="">Sort by price</option>
+    <option value="desc">In descending order</option>
+    <option value="asc">In ascending order</option>
+  </select>
+
+  <select name="condition"> 
+    <option value="">Condition</option>
+    <option value="new">New</option>
+    <option value="used">Used</option>
+    <option value="Like New">Like new</option>
+    <option value="refurbished">Refurbished</option>
+  </select>
+
+  <select name="rating"> 
+    <option value="">Rating</option>
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+  </select>
+
+  <select name="category"> 
+    <option value="">Category</option>
+    <option value="book">book</option>
+  </select>
+  <button type="submit">Apply</button>
+</form>
+{% if adviser  %}
+    <div class="adviser">
+        <img src="{% static 'no_fees.png' %}">
+        <img src="{% static 'top_rated.png' %}">
+    </div>
+{% endif %}    
+
+<div class="grid_container">
+    
+    {% for item in items %}
+        {% if request.user.is_authenticated %}
+            <a href="item_details/{{item.item_id}}">
+        {% else %}
+        <a href="{% url 'login' %}"> 
+        {% endif %}    
+            <div class="item_container">
+                <div class="image_container"> <img src="{{ item.image.url }}" alt="{{ item.image }}"></div>
+                <div class="detail_container"><h3>{{item.title}}:</h3> <p> {{item.price}} SAR</p></div>
+            </div>
+        </a>    
+    {% endfor %}
+</div>
+
+
+{% endblock %}

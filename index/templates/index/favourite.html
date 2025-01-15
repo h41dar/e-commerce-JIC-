@@ -1,0 +1,28 @@
+{% extends "index/master.html" %}
+{% load static %}
+
+
+
+{% block title %} EJIC|favourite{% endblock %}
+
+
+{% block content %}
+<style>
+    .item_container{
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+</style>
+
+<div class="grid_container">
+
+    {% for item_status in item_statuses %}
+    <a href="item_details/{{item_status.item.item_id}}">
+        <div class="item_container">
+            <div class="image_container"> <img src="{{ item_status.item.image.url }}" alt="{{ item_status.item.image }}"></div>
+            <div class="detail_container"><h3>{{item_status.item.title}}</h3> <p> {{item_status.item.price}} SAR</p></div>
+        </div>
+    </a>    
+    {% endfor %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,104 @@
+{% extends "index/master.html" %}
+{% load static %}
+
+
+
+{% block title %} EJIC| welcome {% endblock %}
+
+
+{% block content %}
+<style>
+    
+    .welcome{
+        margin: 5rem;
+        width:70rem;
+        height: 30rem;
+        padding: 1rem;
+        border-radius: 20px;
+        
+        
+    }
+    .welcome h1{
+        font-size: 3rem;
+    }
+    .welcome p{
+        font-size:1.2rem;
+    }
+    main{
+        height: 95vh;
+        display: flex;
+        align-items: center;
+        justify-content: left;
+        background-color: white;
+        margin-top: 0px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    .adviser{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        margin: 1rem;
+    }
+    .adviser img{
+    
+       width: 34rem;
+       height: 26rem;
+       gap: 1rem;
+       border-radius: 20px;
+       box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+       
+
+    }
+    menu{
+        margin-bottom: 0px;
+    }
+    button{
+        height: 4rem;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        border-radius: 30px;
+        padding-top: 0px;
+    }
+</style>
+
+<main>
+
+    <div class="welcome">
+        {% if user %}
+            <h1>Welcome Mr.{{user.last_name}}</h1>
+        {% endif %}
+        <p>
+            Welcome to JIC Marketplace!
+            <br>
+            Your one-stop platform for buying and selling pre-loved items within the JIC community.
+            <br>
+            Whether you're looking for affordable deals or giving your unused items a new home, you've come to the right place!
+            <br>
+            Let’s build a sustainable and connected community together. Start exploring, trading, and saving today!
+            <br>
+            <br>
+           
+            {% if request.user.is_authenticated %}
+                <a href="{% url 'index' %}">
+                    <button><p>Start Shopping</p></button>
+                </a>
+            {% else %} 
+            <a href="{% url 'login' %}"> 
+                    <button><p>Start Shopping</p></button>
+            </a>
+            {% endif %}  
+        </p>    
+    </div>
+    <div class="adviser">
+        <a href="{% url 'login' %}">
+            <img src="{% static 'top_rated.png' %}">
+        </a>
+        
+    </div>
+
+
+</main>
+
+
+
+{% endblock %}

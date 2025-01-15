@@ -1,0 +1,137 @@
+{% extends "index/master.html" %}
+{% load static %}
+
+
+
+{% block title %} EJIC| cart{% endblock %}
+
+
+{% block content %}
+
+<style>
+
+    .price-container {
+        position: relative; /* Enable positioning for child elements */
+        left: 45%;
+        display: inline-block; /* Keeps the container as compact as possible */
+        text-align: center; /* Center text inside the container */
+    }
+
+    .include-tax {
+        position: absolute;
+        top: 15%;
+        left: 135%;
+        transform: translateX(-50%); /* Center element itself */
+        font-size: 0.8em; /* Adjust size for prominence */
+        color: gray; /* Optional: muted color */
+        white-space: nowrap; /* Prevents breaking into multiple lines */
+
+    }
+
+table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 16px;
+            text-align: center;
+            background-color: white;
+            
+        }
+        th{
+            border: 1px solid #dddddd;
+            padding: 8px;
+        }
+        td {
+            
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        h3{
+            text-align: center;
+        }
+        .include_tax{
+            text-align: center;
+            
+        }
+        .buttons{
+            display: flex;
+            justify-content: center;
+        }
+
+        .buttons button {
+            width: 10rem;
+            height: 3rem;
+            margin: 0.5rem;
+        }
+
+</style>
+    <table>
+        <caption>Cart List</caption>
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>User</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Category</th>
+                <th>Condition</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cart in carts %}
+            <tr>
+                <td>
+                    {% if cart.item.image %}
+                        <img src="{{ cart.item.image.url }}" alt="{{ cart.item.title }}" style="height: 50px;">
+                    {% else %}
+                        No Image
+                    {% endif %}
+                </td>
+                <td>{{ cart.item.user }}</td>
+                <td>{{ cart.item.title }}</td>
+                <td>{{ cart.item.description|truncatechars:50 }}</td>
+                <td>${{ cart.item.price }}</td>
+                <td>{{ cart.item.category }}</td>
+                <td>{{ cart.item.condition }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="price-container">
+        <h3>Total Price: {{total_price}}</h3>
+        <p class="include-tax">( VAT Included )</p>
+    </div>
+
+    <div class="buttons">
+        
+        <form class="form_purchase"  method="post">{% csrf_token %}
+            <button class="purchase" value="purchase"  name="purchase">
+                Purchase
+            </button>
+        </form>
+        <form class="form_cart_cancel"  method="post" >{% csrf_token %}
+            <button class="cancel" value="cancel"  name="cancel" >
+                Cancel
+            </button>
+        </form>
+        
+    </div>
+
+    {% if message %}
+         <script>
+  
+            alert("{{ message }}");
+  
+         </script>
+    {% endif %}
+
+
+
+{% endblock %}

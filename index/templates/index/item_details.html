@@ -1,0 +1,235 @@
+{% extends "index/master.html" %}
+{% load static %}
+
+
+
+{% block title %} EJIC| item details{% endblock %}
+
+
+{% block content %}
+
+<style>
+    .body_details{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 100vh;
+        width: 100vw; 
+        gap: 20px;
+        
+    }
+    .details{
+        display: flex;
+        justify-content: space-between;
+        width: 70%;
+        height: 40%;
+        border-radius: 20px;
+       
+    }
+
+    .details .image_container {
+       margin-right: 3%;
+       
+    }
+
+    .details .right {
+       margin-left: 3%;
+       
+    }
+    
+    .image_container {
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+        height: 100%;
+        width: 37%;
+        border-radius: 20px;
+        box-sizing: border-box;
+        background-color: white;
+    }
+    .right{
+        width: 57%;
+        height: 100%;
+        border-radius: 20px;
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .right h3,.right p{
+        display: inline;
+        
+    }
+    .right .group_details{
+        margin: 10px;
+    }
+    
+    .image_container img{
+        width: 100%;
+        height: 80%;
+        border-top-right-radius: 20px ;
+        border-top-left-radius : 20px ;
+    }
+    button{
+        width: 100%;
+    }
+
+  
+    .item_status *:not(button){
+        display: none;
+        visibility: hidden;
+    }
+    .form_button{
+        width: 100%;
+       
+    }
+    .form_button *{
+        margin: 1%;
+    }
+    .reviews{
+        display: flex;
+        flex-direction: column;
+        background-color: white;
+        border-radius: 20px;
+        width:70%; 
+        gap: 20px;
+    }
+
+   
+    .reviews img{
+        width: 150px;
+        height: 150px;
+        border-radius: 20px;
+    }
+
+    .subreviews{
+        display: flex;
+
+    }
+
+    .reviews_p{
+        border-top: solid #103576;
+        color: #103576;
+        width: 70%;
+        text-align: center;
+        font-weight: bold;
+        padding: 1rem;
+        
+    }
+
+
+    
+</style>
+
+<div class="body_details">
+    <div class="details">
+        <div class="image_container">
+            <img src="{{ item.image.url}}" alt="{{item}}">
+            <div class="detail_container"><h3>{{item.title}}</h3> <p> {{item.price}}SAR</p></div>
+        </div>
+        <div class="right">
+            <div class="description">
+                <div class="group_details">
+                    <h3>Description:</h3>
+                    <p>{{item.description}}</p>
+                </div>
+                <div class="group_details">
+                    <h3>The seller: </h3>
+                    <p>{{item.user}}</p>
+                </div>    
+                <div class="group_details">
+                    <h3>Category:</h3>
+                    <p>{{item.category}}</p>
+                </div>
+                <div class="group_details">
+                    <h3>Condition:</h3>
+                    <p>{{item.condition}}</p>  
+                </div>
+                <div class="group_details">
+                    <h3>Item Rating:</h3>
+                    <p>{{item.rating}}</p>  
+                </div>
+                
+            </div>
+            <div class="form_button">
+                {% if item_status %}
+                    {%if item_status.added_to_cart == True %}
+                        <form method="POST" class="item_status"> {% csrf_token %}
+                            <input type="number" value="{{user.user_id}}" name="user">
+                            <input type="number" value="{{item.item_id}}" name="item">
+                            <input type="text" value="{{item_status.favorite}}" name="favorite">
+                            <input type="text" value="False" name="added_to_cart">
+                            <button type="submit" >delete from cart</button>
+                        </form>
+                    {% else %}
+                        <form method="POST" class="item_status"> {% csrf_token %}
+                            <input type="number" value="{{user.user_id}}" name="user">
+                            <input type="number" value="{{item.item_id}}" name="item">
+                            <input type="text" value="{{item_status.favorite}}" name="favorite">
+                            <input type="text" value="True" name="added_to_cart">
+                            <button type="submit" >add to cart</button>
+                        </form>
+                    {% endif %}    
+                {% else %}
+                    <form method="POST" class="item_status"> {% csrf_token %}
+                        <input type="number" value="{{user.user_id}}" name="user">
+                        <input type="number" value="{{item.item_id}}" name="item">
+                        <input type="text" value="False" name="favorite">
+                        <input type="text" value="True" name="added_to_cart">
+                        <button type="submit" >add to cart</button>
+                    </form>
+                {% endif %}
+                {% if item_status %}
+                    {%if item_status.favorite == True %}
+                        <form method="POST" class="item_status"> {% csrf_token %}
+                            <input type="number" value="{{user.user_id}}" name="user">
+                            <input type="number" value="{{item.item_id}}" name="item">
+                            <input type="text" value="False" name="favorite">
+                            <input type="text" value="{{item_status.added_to_cart}}" name="added_to_cart">
+                            <button class="favorite"> unfavorite</button>
+                        </form>
+                    {% else %}
+                        <form method="POST" class="item_status"> {% csrf_token %}
+                            <input type="number" value="{{user.user_id}}" name="user">
+                            <input type="number" value="{{item.item_id}}" name="item">
+                            <input type="text" value="True" name="favorite">
+                            <input type="text" value="{{item_status.added_to_cart}}" name="added_to_cart">
+                            <button class="favorite"> favorite</button>
+                        </form>
+                    {% endif %}    
+                {% else %}
+                    <form method="POST" class="item_status"> {% csrf_token %}
+                        <input type="number" value="{{user.user_id}}" name="user">
+                        <input type="number" value="{{item.item_id}}" name="item">
+                        <input type="text" value="True" name="favorite">
+                        <input type="text" value="False" name="added_to_cart">
+                        <button class="favorite"> favorite</button>
+                    </form>
+                {% endif %}
+                
+            </div>
+        </div>
+    </div>
+
+    <p class="reviews_p">Reviews</p>
+    <div class="reviews"> 
+        {% for review in reviews %}
+            <div class="subreviews">
+                {% if reviewer.image %}
+                    <img src="{{review.reviewer.image.url}}" alt="profile_image" >
+                {% else %}
+                    <img src="{% static 'Profile_Login.jpeg' %}" alt="profile_image" >    
+                {% endif %}
+                <ul> {{review.reviewer}}
+                    <li>rating: {{review.rating}} </li>
+                    <li>review: {{review.review_text}} </li>
+                </ul>
+            </div>    
+        {% endfor %}
+    </div>
+
+</div>
+
+{% endblock %}
+
